@@ -1,0 +1,15 @@
+megs: 32
+
+romimage: file=/home/zyj/bochs-2.6.9/bios/BIOS-bochs-latest
+vgaromimage: file=/home/zyj/bochs-2.6.9/bios/VGABIOS-lgpl-latest
+
+boot: disk
+
+log: bochs.out
+
+mouse: enabled=0
+keyboard: keymap=/home/zyj/bochs-2.6.9/gui/keymaps/x11-pc-us.map
+
+ata0: enabled=1, ioaddr1=0x1f0, ioaddr2=0x3f0, irq=14
+ata0-master: type=disk, path="/home/zyj/Desktop/os/a.img", mode=flat
+ata0-slave: type=disk, path="/home/zyj/Desktop/os/b.img", mode=flat
