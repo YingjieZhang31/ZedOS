@@ -13,6 +13,7 @@
 
 /*负责初始化所有模块 */
 void init_all() {
+   test_gui();
    put_str("init_all\n");
    idt_init();	     // 初始化中断
    mem_init();	     // 初始化内存管理系统

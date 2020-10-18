@@ -2,6 +2,13 @@ TI_GDT equ  0
 RPL0  equ   0
 SELECTOR_VIDEO equ (0x0003<<3) + TI_GDT + RPL0
 
+;; 调色板相关宏定义
+SELECTOR_COLOR equ (0x0004<<3) + TI_GDT + RPL0 ;图像模式显存selector
+SELECTOR_CODE equ (0x0001<<3) + TI_GDT + RPL0  ;代码段selector
+VRAM_FUNC_PORT equ 0x3c8   ;设置调色板功能端口
+VRAM_SET_PORT equ 0x3c9    ;设置调色板颜色端口
+;;;;;;;;;;;;;;;;;;
+
 section .data
 put_int_buffer    dq    0     ; 定义8字节缓冲区用于数字到字符的转换
 
@@ -271,5 +278,95 @@ set_cursor:
    mov dx, 0x03d5 
    mov al, bl
    out dx, al
+   popad
+   ret
+
+
+;; 测试调色板
+global test_gui:
+   pushad
+   
+   mov ax, SELECTOR_CODE
+   mov gs, ax
+
+; 调色板
+   ; 索引0    
+   mov dx,  VRAM_FUNC_PORT
+   mov al,  0           ;建调色板索引0号
+   out dx,al
+   mov dx,  VRAM_SET_PORT   ;设置蓝色背景
+   mov al,0           ;R分量
+   out dx,al
+   mov al,0           ;G分量
+   out dx,al
+   mov al,35          ;B分量
+   out dx,al
+   ; 索引1
+   mov dx,  VRAM_FUNC_PORT
+   mov al,  1              ;建调色板索引1号
+   out dx,al
+   mov dx,  VRAM_SET_PORT     ;设置白色调色板
+   mov al,63           ;R分量
+   out dx,al
+   mov al,63           ;G分量
+   out dx,al
+   mov al,63          ;B分量
+   out dx,al
+   ; 索引2
+   mov dx,  VRAM_FUNC_PORT
+   mov al,  2                 ;建调色板索引2号
+   out dx,al
+   mov dx,  VRAM_SET_PORT     ;设置红色调色板
+   mov al,63           ;R分量
+   out dx,al
+   mov al,0           ;G分量
+   out dx,al
+   mov al,0          ;B分量
+   out dx,al
+   ; 索引3
+   mov dx,  VRAM_FUNC_PORT
+   mov al, 3           ;建调色板索引3号
+   out dx,al
+   mov dx,  VRAM_SET_PORT     ;设置黄色
+   mov al,30           ;R分量
+   out dx,al
+   mov al,30           ;G分量
+   out dx,al
+   mov al,0          ;B分量
+   out dx,al
+   ; 索引4
+   mov dx,  VRAM_FUNC_PORT
+   mov al, 4              ;建调色板索引4号
+   out dx,al
+   mov dx,  VRAM_SET_PORT     ;设置黑色
+   mov al,0           ;R分量
+   out dx,al
+   mov al,0           ;G分量
+   out dx,al
+   mov al,0          ;B分量
+   out dx,al
+
+   win1:
+   mov bl,1              ;填充颜色
+   mov dx,50             ;起始行
+   mov bx,320*50/10h
+   mov ax,SELECTOR_VIDEO
+   mov es,ax
+   win1line:
+   mov cx,50         ;矩形长度
+   mov di,100         ;起始列
+   add di,bx
+   win1point:
+   mov  [es:di],bl   ;调色板颜色索引送往显存地址
+   inc di
+   loop win1point
+   inc dx
+   mov ax,es
+   add ax,0x140      ;显卡内存每一行增加一次es段地址   320*x+y 320=140h
+   mov bx,ax
+   cmp dx,100       ;矩形高度
+   jne win1line
+
+   jmp $
    popad
    ret
