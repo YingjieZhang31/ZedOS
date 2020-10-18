@@ -287,10 +287,7 @@ global test_gui
 test_gui:
    pushad
    
-   mov ax, SELECTOR_CODE
-   mov gs, ax
-
-; 调色板
+   ; 调色板
    ; 索引0    
    mov dx,  VRAM_FUNC_PORT
    mov al,  0           ;建调色板索引0号
@@ -347,24 +344,33 @@ test_gui:
    mov al,0          ;B分量
    out dx,al
 
+   mov cx, 0
+   mov ax, 0x0
+   clearscreen:
+   mov bx, ax
+   mov [gs:bx],cx ;将地址[es*0x10+di]=7
+   inc ax     ;增 相对地址1字节
+   cmp ax, 0xfa00 
+   jb clearscreen ;如果小于0xfa00继续清屏
+   
    win1:
-   mov bl,1              ;填充颜色
+   mov bl,2              ;填充颜色
    mov dx,50             ;起始行
-   mov bx,320*50/10h
-   mov ax,SELECTOR_VIDEO
-   mov es,ax
+   mov bx,16100
+   mov ax,SELECTOR_COLOR
+   mov gs,ax
    win1line:
    mov cx,50         ;矩形长度
-   mov di,100         ;起始列
-   add di,bx
+   mov di,bx         ;起始列
+   ;add di,bx
    win1point:
-   mov  [es:di],bl   ;调色板颜色索引送往显存地址
+   mov byte [gs:di],2   ;调色板颜色索引送往显存地址
    inc di
    loop win1point
    inc dx
    mov ax,es
-   add ax,0x140      ;显卡内存每一行增加一次es段地址   320*x+y 320=140h
-   mov bx,ax
+   add bx,0x140      ;显卡内存每一行增加一次es段地址   320*x+y 320=140h
+   ;mov bx,ax
    cmp dx,100       ;矩形高度
    jne win1line
 
