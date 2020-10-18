@@ -16,7 +16,9 @@ void halt(void);
 /*负责初始化所有模块 */
 void init_all() {
    test_gui();
-   put_line(16100, 16200, 2);
+   
+   put_line(43210, 100, 1);
+   halt();
 
    put_str("init_all\n");
    idt_init();	     // 初始化中断
