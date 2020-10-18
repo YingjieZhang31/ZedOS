@@ -283,7 +283,8 @@ set_cursor:
 
 
 ;; 测试调色板
-global test_gui:
+global test_gui
+test_gui:
    pushad
    
    mov ax, SELECTOR_CODE

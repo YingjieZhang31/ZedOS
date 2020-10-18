@@ -19,7 +19,7 @@
 void init(void);
 
 int main(void) {
-   put_str("I am kernel\n");
+   //put_str("I am kernel\n");
    init_all();
 
 /*************    写入应用程序    *************/
