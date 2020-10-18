@@ -13,12 +13,16 @@
    VIDEO_DESC: dd    0x80000007	       ; limit=(0xbffff-0xb8000)/4k=0x7
 	       dd    DESC_VIDEO_HIGH4  ; 此时dpl为0
 
+   COLOR_DESC: dd    0x0000000F	       ; limit=(0xbffff-0xb8000)/4k=0x7
+	       dd    DESC_COLOR_HIGH4  ; 此时dpl为0
+
    GDT_SIZE   equ   $ - GDT_BASE
    GDT_LIMIT   equ   GDT_SIZE -	1 
    times 60 dq 0					 ; 此处预留60个描述符的空位(slot)
    SELECTOR_CODE equ (0x0001<<3) + TI_GDT + RPL0         ; 相当于(CODE_DESC - GDT_BASE)/8 + TI_GDT + RPL0
    SELECTOR_DATA equ (0x0002<<3) + TI_GDT + RPL0	 ; 同上
    SELECTOR_VIDEO equ (0x0003<<3) + TI_GDT + RPL0	 ; 同上 
+   SELECTOR_COLOR equ (0x0004<<3) + TI_GDT + RPL0	 ; 同上 
 
    ; total_mem_bytes用于保存内存容量,以字节为单位,此位置比较好记。
    ; 当前偏移loader.bin文件头0x200字节,loader.bin的加载地址是0x900,
@@ -141,8 +145,17 @@ p_mode_start:
    mov es, ax
    mov ss, ax
    mov esp,LOADER_STACK_TOP
-   mov ax, SELECTOR_VIDEO
+   ;mov ax, SELECTOR_VIDEO
+   ;mov gs, ax
+   mov ax, SELECTOR_COLOR
    mov gs, ax
+
+   mov byte [gs:4], 0x15
+   mov byte [gs:4], 0x15
+   mov byte [gs:4], 0x15
+   mov byte [gs:4], 0x15
+
+   jmp $
 
 ; -------------------------   加载kernel  ----------------------
    mov eax, KERNEL_START_SECTOR        ; kernel.bin所在的扇区号
