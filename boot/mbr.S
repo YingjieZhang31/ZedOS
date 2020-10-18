@@ -26,7 +26,7 @@ clearscreen:
    cmp ax,0x7d00 
    jb clearscreen ;如果小于0xfa00继续清屏
    
-   jmp $
+   jmp do_loader
    
 ; 清屏
 ;利用0x06号功能，上卷全部行，则可清屏。
@@ -63,12 +63,13 @@ clearscreen:
 
    mov byte [gs:0x08],'R'
    mov byte [gs:0x09],0xA4
-	 
+
+do_loader:   
    mov eax,LOADER_START_SECTOR	 ; 起始扇区lba地址
    mov bx,LOADER_BASE_ADDR       ; 写入的地址
    mov cx,4			 ; 待读入的扇区数
    call rd_disk_m_16		 ; 以下读取程序的起始部分（一个扇区）
-  
+
    jmp LOADER_BASE_ADDR + 0x300
        
 ;-------------------------------------------------------------------------------

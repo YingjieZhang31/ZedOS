@@ -150,10 +150,14 @@ p_mode_start:
    mov ax, SELECTOR_COLOR
    mov gs, ax
 
-   mov byte [gs:4], 0x15
-   mov byte [gs:8], 0x15
-   mov byte [gs:12], 0x15
-   mov byte [gs:16], 0x15
+   mov cx, 10
+   mov ax, 0x7d01
+   clearscreen:
+   mov bx, ax
+   mov [gs:bx],cx ;将地址[es*0x10+di]=7
+   inc ax     ;增 相对地址1字节
+   cmp ax, 0xfa00 
+   jb clearscreen ;如果小于0xfa00继续清屏
 
    jmp $
 
