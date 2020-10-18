@@ -11,6 +11,13 @@ SECTION MBR vstart=0x7c00
    mov ax,0xb800
    mov gs,ax
 
+; test
+   mov al, 0x13
+   mov ah, 0x00
+   int 0x10
+fin:
+   jmp fin   
+
 ; 清屏
 ;利用0x06号功能，上卷全部行，则可清屏。
 ; -----------------------------------------------------------
