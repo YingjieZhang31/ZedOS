@@ -11,9 +11,13 @@
 #include "ide.h"
 #include "fs.h"
 
+void halt(void);
+
 /*负责初始化所有模块 */
 void init_all() {
    test_gui();
+   put_line(16100, 16200, 2);
+
    put_str("init_all\n");
    idt_init();	     // 初始化中断
    mem_init();	     // 初始化内存管理系统
@@ -26,4 +30,9 @@ void init_all() {
    intr_enable();    // 后面的ide_init需要打开中断
    ide_init();	     // 初始化硬盘
    filesys_init();   // 初始化文件系统
+}
+
+
+void halt() {
+   for(;;);
 }
