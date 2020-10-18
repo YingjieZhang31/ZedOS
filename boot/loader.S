@@ -151,7 +151,7 @@ p_mode_start:
    mov gs, ax
 
    mov cx, 10
-   mov ax, 0x7d01
+   mov ax, 0x0
    clearscreen:
    mov bx, ax
    mov [gs:bx],cx ;将地址[es*0x10+di]=7
