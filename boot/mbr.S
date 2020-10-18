@@ -11,6 +11,23 @@ SECTION MBR vstart=0x7c00
    mov ax,0xb800
    mov gs,ax
    
+   mov al,0x13
+   mov ah,0x00
+   int 0x10
+   
+   mov cx, 10       ;设定颜色位7号
+   mov ax,0xa000  ;显存首地址
+   mov es,ax      ; 法对es直接操作立即数，必须由寄存器中转
+   mov ax,0       ;相对地址0x00
+clearscreen:
+   mov bx,ax
+   mov [es:bx],cx ;将地址[es*0x10+di]=7
+   inc ax     ;增 相对地址1字节
+   cmp ax,0x7d00 
+   jb clearscreen ;如果小于0xfa00继续清屏
+   
+   jmp $
+   
 ; 清屏
 ;利用0x06号功能，上卷全部行，则可清屏。
 ; -----------------------------------------------------------

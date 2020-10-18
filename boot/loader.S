@@ -13,7 +13,7 @@
    VIDEO_DESC: dd    0x80000007	       ; limit=(0xbffff-0xb8000)/4k=0x7
 	       dd    DESC_VIDEO_HIGH4  ; 此时dpl为0
 
-   COLOR_DESC: dd    0x0000000F	       ; limit=(0xbffff-0xb8000)/4k=0x7
+   COLOR_DESC: dd    0x0000000F	       ; limit=(0xa0000-0xaffff)/4k=0x7
 	       dd    DESC_COLOR_HIGH4  ; 此时dpl为0
 
    GDT_SIZE   equ   $ - GDT_BASE
@@ -151,9 +151,9 @@ p_mode_start:
    mov gs, ax
 
    mov byte [gs:4], 0x15
-   mov byte [gs:4], 0x15
-   mov byte [gs:4], 0x15
-   mov byte [gs:4], 0x15
+   mov byte [gs:8], 0x15
+   mov byte [gs:12], 0x15
+   mov byte [gs:16], 0x15
 
    jmp $
 
