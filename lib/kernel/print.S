@@ -7,6 +7,7 @@ SELECTOR_COLOR equ (0x0004<<3) + TI_GDT + RPL0 ;图像模式显存selector
 SELECTOR_CODE equ (0x0001<<3) + TI_GDT + RPL0  ;代码段selector
 VRAM_FUNC_PORT equ 0x3c8   ;设置调色板功能端口
 VRAM_SET_PORT equ 0x3c9    ;设置调色板颜色端口
+PADDING equ 0x1180         ; 上边缘填充
 ;;;;;;;;;;;;;;;;;;
 
 section .data
@@ -403,6 +404,25 @@ put_line:
    mov byte [gs:di], bl
    inc di
    loop one_point
+
+   popad
+   ret
+
+; 画点
+global put_dot:
+   pushad
+
+   mov ax, SELECTOR_COLOR     ;显存描述符赋予gs
+   mov gs, ax
+
+   ;mov ecx, [esp + 36]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 偏移
+   ;mov ecx, [esp + 40]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+40字节 // 色号   
+   mov eax, [esp + 36] // ebx offset
+   mov ebx, eax
+   mov eax, [esp + 40] // eax 色号
+
+   add ebx, PADDING
+   mov byte [gs:ebx], al
 
    popad
    ret

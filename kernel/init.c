@@ -17,6 +17,7 @@ void halt(void);
 void init_all() {
    test_gui();
    put_line(16100, 16200, 2);
+   put_dot(0, 1);
 
    put_str("init_all\n");
    idt_init();	     // 初始化中断
