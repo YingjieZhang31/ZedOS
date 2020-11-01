@@ -374,7 +374,7 @@ test_gui:
    cmp dx,100       ;矩形高度
    jne win1line
 
-   jmp $
+   ;jmp $
    popad
    ret
 
@@ -387,21 +387,22 @@ put_line:
    mov gs, ax
 
    ;mov ecx, [esp + 36]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 起始点
-   ;mov ecx, [esp + 40]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 终点
+   ;mov ecx, [esp + 40]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 长度
    ;mov ecx, [esp + 44]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 色号
    
-   mov eax, [esp + 36] // ebx 起始点
+   mov eax, [esp + 36] ;ebx 起始点
    mov ebx, eax
 
-   mov eax, [esp + 40] // ecx 终点
+   mov eax, [esp + 40] ;ecx 终点
    mov ecx, eax
-
-   mov eax, [esp + 44] // 色号
+   
+   mov eax, [esp + 44] ;eax 色号
+   
 
    one_line:
    mov di, bx
    one_point:
-   mov byte [gs:di], bl
+   mov byte [gs:di], al
    inc di
    loop one_point
 

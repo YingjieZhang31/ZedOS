@@ -7,7 +7,7 @@ void put_int(uint32_t num);	 // 以16进制打印
 void set_cursor(uint32_t cursor_pos);
 void cls_screen(void);
 void test_gui(void);
-void put_line(uint32_t start, uint32_t end, uint32_t color);
 void put_dot(uint32_t offset, uint32_t color);
+void put_line(uint32_t start, uint32_t end, uint32_t color_num);
 #endif
 
