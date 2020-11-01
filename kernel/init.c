@@ -15,7 +15,7 @@ void halt(void);
 
 /*负责初始化所有模块 */
 void init_all() {
-   test_gui();s
+   test_gui();
    put_line(43210, 100, 1);
    put_dot(0, 1);
 

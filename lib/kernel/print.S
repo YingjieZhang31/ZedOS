@@ -410,7 +410,8 @@ put_line:
    ret
 
 ; 画点
-global put_dot:
+global put_dot
+put_dot:
    pushad
 
    mov ax, SELECTOR_COLOR     ;显存描述符赋予gs
@@ -418,9 +419,9 @@ global put_dot:
 
    ;mov ecx, [esp + 36]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+36字节 // 偏移
    ;mov ecx, [esp + 40]	      ;pushad压入4×8＝32字节,加上主调函数的返回地址4字节,故esp+40字节 // 色号   
-   mov eax, [esp + 36] // ebx offset
+   mov eax, [esp + 36] ; ebx offset
    mov ebx, eax
-   mov eax, [esp + 40] // eax 色号
+   mov eax, [esp + 40] ; eax 色号
 
    add ebx, PADDING
    mov byte [gs:ebx], al
